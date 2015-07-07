@@ -10,7 +10,7 @@ var port = process.env.PORT || 3000;
 var crowdFundingPage = {
     name: "Playground in Hackney Wick",
     totalPledged: 700,
-    target: 2000,
+    target: 3000,
     owner: "Holly Groom",
     story: "We are raising £3000 to build an adventure playground in Hackney Wick because the kids have nowhere to play"
 };

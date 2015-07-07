@@ -1,0 +1,277 @@
+
+/* Fonts */
+
+@font-face {
+    font-family: 'roboto-light';
+    src: url('/webfonts/Roboto-Light-webfont.eot');
+    src: url('/webfonts/Roboto-Light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/webfonts/Roboto-Light-webfont.woff') format('woff'),
+         url('/webfonts/Roboto-Light-webfont.ttf') format('truetype'),
+         url('/webfonts/Roboto-Light-webfont.svg#robotoblack') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'roboto';
+    src: url('/webfonts/Roboto-Regular-webfont.eot');
+    src: url('/webfonts/Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/webfonts/Roboto-Regular-webfont.woff') format('woff'),
+         url('/webfonts/Roboto-Regular-webfont.ttf') format('truetype'),
+         url('/webfonts/Roboto-Regular-webfont.svg#robotoblack') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'roboto-bold';
+    src: url('/webfonts/Roboto-Bold-webfont.eot');
+    src: url('/webfonts/Roboto-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/webfonts/Roboto-Bold-webfont.woff') format('woff'),
+         url('/webfonts/Roboto-Bold-webfont.ttf') format('truetype'),
+         url('/webfonts/Roboto-Bold-webfont.svg#robotoblack') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Layout */
+
+html, body {
+	background-color: #e5e5e5;
+    font-family: 'roboto-light', Arial, Helvetica, sans-serif;
+    margin: 0;
+}
+
+section {
+	padding: 0 30px;
+}
+
+.container {
+	border: 1px solid #e5e5e5;
+	background-color: #fff;
+	margin: 0 auto;
+	width: 495px;
+}
+
+.progress__col {
+	display: inline-block;
+}
+
+.progress__col.col--left {
+	width: 75%;
+}
+
+.progress__col.col--right {
+	float: right;
+	text-align: right;
+}
+
+/* Typography */
+strong {
+    font-family: 'roboto-bold';
+}
+
+.intro-text {
+	font-size: 1.5em;
+	margin: 30px 30px 20px;
+}
+
+.progress__large-text, .progress__small-text {
+  color: #a226ab;
+}
+
+.progress__large-text {
+	clear: both;
+  color: #a226ab;
+  display: block;
+  font-size: 1.625em;
+}
+
+.owner__title {
+	clear:both;
+	color: #888;
+	font-size: 0.875em;
+	margin: 5px 0 5px;
+}
+
+.owner__name {
+	float:left;
+	font-size: 1.250em;
+	margin: 0;	
+}
+
+/* Components */
+
+progress[value]  {
+  /* Reset the default appearance */
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+
+  /* Get rid of default border in Firefox. */
+  border: none;
+  border-radius: 5px;
+
+  /* Dimensions */
+  width: 100%;
+  height: 10px;
+
+  /* For IE10 */
+  color: blue; 
+}
+
+progress[value]::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
+
+progress[value]::-webkit-progress-value {
+  background-color: #a226ab;
+  border-radius: 5px; 
+}
+
+progress[value]::-moz-progress-bar { 
+  background-color: #a226ab;
+  border-radius: 5px; 
+}
+
+.pledge-form {
+	margin: 20px 50px;
+	height: 47px;
+}
+
+.pledge-form.loading {
+	background: url(/images/ajax-loader.gif) no-repeat center;
+}
+
+.pledge-form.loading .pledge-form__input,
+.pledge-form.loading .pledge-form__button {
+	display: none;
+}
+
+.pledge-form.success {
+	background: #fbf4fb;
+	border: 1px solid #a226ab;
+	border-radius: 2px;
+	line-height: 47px;
+	text-align: center;
+}
+
+.thank-you-message {
+	color: #a226ab;	
+	font-size: 1.250em;
+}
+
+.pledge-form__input {
+	border: 0;
+	box-shadow: inset -1px 2px 6px 1px rgba(168,168,168,1);
+	height: 45px;
+	font-size: 1em;
+	text-indent: 0.5em;
+	margin-right: 20px;
+	width: 80px;
+}
+
+.pledge-form__button {
+	background-color: #a226ab;
+	border: 0;
+	color: #fff;
+	font-size: 1em;
+	height: 45px;
+	width: 228px;
+
+}
+
+.pledge-form__button:hover,  .pledge-form__button:focus{
+	background-color: #6b1771;
+	cursor: pointer;
+}
+
+.owner {
+	margin: 30px 120px;
+	width: 195px;
+}
+
+.owner__avatar, .owner__details {
+	float:left;
+}
+
+.owner__details {
+	margin-left: 1em;
+	text-align: left
+}
+
+.owner__avatar img{
+	border-radius: 60px;
+}
+
+footer {
+	border-top: 1px solid #e5e5e5;
+	padding-bottom: 20px;
+}
+
+.footer-text {
+	font-size: 18px;	
+	margin: 30px 40px 10px;
+}
+
+.create-link {
+	background-color: #f6821f;
+	border: 0;
+	color: #fff;
+	display: inline-block;
+	font-size: 1em;
+	height: 45px;
+	line-height: 45px;
+	text-decoration: none;
+	width: 228px;	
+}
+
+.create-link:hover, .create-link:focus {
+	background-color: #de6d0d;
+	cursor: pointer;
+}
+
+.footer-logo {
+	color: #888;
+	font-size: 0.875em;	
+}
+
+.footer-logo__img {
+	display: block;
+	margin: 10px auto;
+	width: 213px;
+}
+
+/* Utility */
+
+.visually-hidden { 
+	 position: absolute; 
+	 overflow: hidden; 
+	 clip: rect(0 0 0 0); 
+	 height: 1px; width: 1px; 
+	 margin: -1px; padding: 0; border: 0; 
+}
+
+.text-c {
+	text-align: center;
+}
+
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+    *zoom: 1;
+}

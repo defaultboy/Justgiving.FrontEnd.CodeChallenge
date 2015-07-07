@@ -1,1 +1,70 @@
-Your html goes <strong>here</strong>
+
+<!doctype html>
+<html lang="en">
+<head>
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+
+	<meta name="description" content="Just">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title id="page-title">Crowdfunding for good from JustGiving</title>
+	<meta name="title" content="Crowdfunding for good from JustGiving">
+	<meta name="description" content="With JustGiving Crowdfunding, anyone can raise money to fund their own project. If it benefits a friend in need, or a local or overseas community">
+
+	<link rel="stylesheet" href="/css/styles.css" />
+
+</head>
+<body>
+	<div class="container">
+		<header class="header text-c">
+			<img class="header__img" alt="" src="/images/crowdfunding_image.jpg">
+			<h1 id="main-heading" class="visually-hidden"></h1>
+			<p id="story" class="intro-text"></p>
+		</header>
+
+		<section class="progress">
+			<progress id="progress-bar" class="progress-bar" max="100" value="0"></progress>
+
+			<div class="progress__col col--left">
+				<span class="progress__large-text" id="total-pledged" class="total"></span>
+				<span class="progress__small-text" id="target" class=""></span>
+			</div>
+
+			<div class="progress__col col--right">
+				<span class="progress__large-text"  id="percent-pledged" class="percent"></span>
+				<span class="progress__small-text">funded</span>
+			</div>
+
+			<form id="pledge-form" class="pledge-form">
+				<input class="pledge-form__input" name="pledge-amount" id="pledge-amount" type="text" placeholder="&pound;20">
+				<label class="visually-hidden" for="pledge-amount">Amount to pledge</label>
+				<input class="pledge-form__button" type="submit" value="Pledge">
+			</form>
+		</section>
+
+		<section class="owner text-c cf">
+			<div class="owner__avatar">
+				<img alt="" src="/images/avatar.jpg">
+			</div>
+			<div class="owner__details">
+				<p class="owner__title">Project owner</p>
+				<p id="owner-name" class="owner__name"></p>
+			</div>
+		</section>
+
+		<footer class="text-c">
+			<p class="footer-text">Create your own crowdfunding project and make a difference in your community</p>
+
+			<a href="https://crowdfunding.justgiving.com/page/create" target="_blank" title="Link opens in new window" class="create-link" href="">Get started</a>
+
+			<p class="footer-logo">
+				Powered by <img class="footer-logo__img" alt="Just Giving" src="/images/justgiving_logo.svg">
+			</p>
+		</footer>
+	</div>
+
+	<script src="/javascript/main.js"></script>
+</body>
+</html>

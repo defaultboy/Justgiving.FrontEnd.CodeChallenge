@@ -91,6 +91,7 @@ strong {
 	clear:both;
 	color: #888;
 	font-size: 0.875em;
+	font-family: 'roboto-bold';
 	margin: 5px 0 5px;
 }
 
@@ -98,6 +99,18 @@ strong {
 	float:left;
 	font-size: 1.250em;
 	margin: 0;	
+}
+
+.error-message {
+	display:block;
+	background-color: #fff2e7;
+	border: 1px solid #f6821f;
+	color: #f6821f;
+	font-size: 1.250em;
+	padding: 0.5em 0;
+	text-align: center;
+	width: 100%;
+	margin: 10px 0 0;
 }
 
 /* Components */
@@ -186,6 +199,7 @@ progress[value]::-moz-progress-bar {
 .pledge-form__button:hover,  .pledge-form__button:focus{
 	background-color: #6b1771;
 	cursor: pointer;
+	outline: 0;
 }
 
 .owner {
@@ -202,8 +216,8 @@ progress[value]::-moz-progress-bar {
 	text-align: left
 }
 
-.owner__avatar img{
-	border-radius: 60px;
+.owner__image{
+	border-radius: 50%;
 }
 
 footer {
@@ -231,6 +245,7 @@ footer {
 .create-link:hover, .create-link:focus {
 	background-color: #de6d0d;
 	cursor: pointer;
+	outline: 0;
 }
 
 .footer-logo {

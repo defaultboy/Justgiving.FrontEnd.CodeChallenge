@@ -1,16 +1,17 @@
 // select elements to modify
 var pageTitle = document.getElementById('page-title'),
-	mainHeading = document.getElementById('main-heading'),
-	story = document.getElementById('story'),
-	totalPledged = document.getElementById('total-pledged'),
-	target = document.getElementById('target'),
-	ownerName = document.getElementById('owner-name'),
-	percentPledged = document.getElementById('percent-pledged'),
-	progressBar	= document.getElementById('progress-bar'),
-	pledgeForm = document.getElementById('pledge-form'); 
+mainHeading = document.getElementById('main-heading'),
+story = document.getElementById('story'),
+totalPledged = document.getElementById('total-pledged'),
+target = document.getElementById('target'),
+ownerName = document.getElementById('owner-name'),
+percentPledged = document.getElementById('percent-pledged'),
+progressBar	= document.getElementById('progress-bar'),
+pledgeForm = document.getElementById('pledge-form'),
+errorContainer = document.getElementById('error-container'); 
 
 function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function ajaxRequest(){
@@ -42,7 +43,7 @@ function populatePage(){
 
 		if (mygetrequest.status == 200 || window.location.href.indexOf('http') == -1){
    		var jsondata = eval('('+mygetrequest.responseText+')') //retrieve result as a JavaScript object
-   
+
 		   // populate page content
 		   pageTitle.innerHTML = 'JustGiving - ' + jsondata.name;
 		   mainHeading.innerHTML = jsondata.name;
@@ -63,8 +64,8 @@ function populatePage(){
 
 		}
 		else{
-			alert('Sorry, something went wrong. Please try again by refreshing the page.')
-			}
+			errorContainer.innerHTML('<span class="error-message">Sorry, something went wrong.<br>Please try again.</span>')
+		}
 	}
 }
 
@@ -103,64 +104,59 @@ function postPledge(pledgeForm, amount) {
 				myupdaterequest.send(null);
 
 				function updateTotals(){
-				if (myupdaterequest.readyState == 4){
+					if (myupdaterequest.readyState == 4){
 
-				if (myupdaterequest.status == 200 || window.location.href.indexOf('http') == -1){
-   				var jsondata = eval('('+myupdaterequest.responseText+')') //retrieve result as a JavaScript object
-   
-			   // populate page content
-			   var jsonTotalPledged = jsondata.totalPledged.toFixed(2);
+						if (myupdaterequest.status == 200 || window.location.href.indexOf('http') == -1){
+   							var jsondata = eval('('+myupdaterequest.responseText+')') //retrieve result as a JavaScript object
 
-			   totalPledged.innerHTML = '&pound;' + numberWithCommas(jsonTotalPledged);
+							// populate page content
+							var jsonTotalPledged = jsondata.totalPledged.toFixed(2);
 
-			   // calculate percentage
-			   var percentPledgedValue = Math.floor((jsondata.totalPledged / jsondata.target) * 100);
-			   percentPledged.innerHTML = percentPledgedValue + '%';
+							totalPledged.innerHTML = '&pound;' + numberWithCommas(jsonTotalPledged);
 
-			   // update progress bar
-			   progressBar.value = percentPledgedValue;
+							// calculate percentage
+							var percentPledgedValue = Math.floor((jsondata.totalPledged / jsondata.target) * 100);
+							percentPledged.innerHTML = percentPledgedValue + '%';
 
-			}
-		else{
-			alert('Sorry, something went wrong. Please try again by refreshing the page.')
-			}
-	}
-}
+							// update progress bar
+							progressBar.value = percentPledgedValue;
+
+						}
+						else{
+							// handle 500 error here
+							errorContainer.innerHTML = '<span class="error-message">Sorry, something went wrong submitting your pledge.<br />Please try again.</span>';
+							}
+					}
+				}
 
 			} else {
 				pledgeForm.className = pledgeFormDefaultClass;
-				alert('Sorry, there was a problem submitting your pledge. Please try again.');
+				errorContainer.innerHTML = '<span class="error-message">Sorry, something went wrong submitting your pledge.<br />Please try again.</span>';
 			}
 		}		
 	}
-
 } 
 
 // validate form abd post pledge to database
 pledgeForm.addEventListener('submit', function(e){
 
 	var amount = pledgeForm.elements['pledge-amount'].value;
-		//remove pound sign
-		amount = amount.replace(/\u00A3/g, '');
+	
+	//remove pound sign
+	amount = amount.replace(/\u00A3/g, '');
 
-  // check if not null empty or not a number
-  if( !amount || isNaN(amount) ) {
-
-  	alert('please enter a number');
-
-  }
-  else {
-
-  	postPledge(pledgeForm, amount);
-
-  }
+  	// check if not null empty or not a number
+  	if( !amount || isNaN(amount) ) {
+  		e.preventDefault();   		
+  		errorContainer.innerHTML = '<span class="error-message">Please enter a number.</span>';
+  	}
+ 	else {
+  		postPledge(pledgeForm, amount);
+  	}
 
   e.preventDefault(); 
 
 });
-
-
-// update funding totals
 
 
 // init everything

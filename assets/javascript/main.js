@@ -1,14 +1,14 @@
 // select elements to modify
 var pageTitle = document.getElementById('page-title'),
-mainHeading = document.getElementById('main-heading'),
-story = document.getElementById('story'),
-totalPledged = document.getElementById('total-pledged'),
-target = document.getElementById('target'),
-ownerName = document.getElementById('owner-name'),
-percentPledged = document.getElementById('percent-pledged'),
-progressBar	= document.getElementById('progress-bar'),
-pledgeForm = document.getElementById('pledge-form'),
-errorContainer = document.getElementById('error-container'); 
+	mainHeading = document.getElementById('main-heading'),
+	story = document.getElementById('story'),
+	totalPledged = document.getElementById('total-pledged'),
+	target = document.getElementById('target'),
+	ownerName = document.getElementById('owner-name'),
+	percentPledged = document.getElementById('percent-pledged'),
+	progressBar	= document.getElementById('progress-bar'),
+	pledgeForm = document.getElementById('pledge-form'),
+	errorContainer = document.getElementById('error-container'); 
 
 function numberWithCommas(x) {
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -35,7 +35,7 @@ function ajaxRequest(){
 
 var mygetrequest = new ajaxRequest()
 mygetrequest.onreadystatechange = populatePage;
-mygetrequest.open('GET', '/api/crowdFundingPage', true);
+mygetrequest.open('GET', '/api/crowdFundingPage' + "?" + (new Date()).getTime(), true); // date and time to avoid caching
 mygetrequest.send(null);
 
 function populatePage(){
@@ -57,7 +57,7 @@ function populatePage(){
 
 		   // calculate percentage
 		   var percentPledgedValue = Math.floor((jsondata.totalPledged / jsondata.target) * 100);
-		   percentPledged.innerHTML = percentPledgedValue + '%';
+		   percentPledged.innerHTML = percentPledgedValue + '&#37;';
 
 		   // update progress bar
 		   progressBar.value = percentPledgedValue;
@@ -100,7 +100,7 @@ function postPledge(pledgeForm, amount) {
 				// update totals and progress bar
 				var myupdaterequest = new ajaxRequest()
 				myupdaterequest.onreadystatechange = updateTotals;
-				myupdaterequest.open('GET', '/api/crowdFundingPage', true);
+				myupdaterequest.open('GET', '/api/crowdFundingPage' + "?" + (new Date()).getTime(), true);
 				myupdaterequest.send(null);
 
 				function updateTotals(){
@@ -123,15 +123,17 @@ function postPledge(pledgeForm, amount) {
 
 						}
 						else{
-							// handle 500 error here
-							errorContainer.innerHTML = '<span class="error-message">Sorry, something went wrong submitting your pledge.<br />Please try again.</span>';
+							errorContainer.innerHTML = '<span class="error-message">Sorry, something went wrong.</span>';
 							}
 					}
 				}
 
 			} else {
+
+				// handle 500 error here
+
 				pledgeForm.className = pledgeFormDefaultClass;
-				errorContainer.innerHTML = '<span class="error-message">Sorry, something went wrong submitting your pledge.<br />Please try again.</span>';
+				errorContainer.innerHTML = '<span class="error-message">Sorry, something went wrong submitting your pledge.<br>Please try again.</span>';
 			}
 		}		
 	}
@@ -157,9 +159,3 @@ pledgeForm.addEventListener('submit', function(e){
   e.preventDefault(); 
 
 });
-
-
-// init everything
-window.onload = function(e){ 
-	console.log('window loaded');
-}

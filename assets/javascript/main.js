@@ -133,7 +133,7 @@ function postPledge(pledgeForm, amount) {
 				// handle 500 error here
 
 				pledgeForm.className = pledgeFormDefaultClass;
-				errorContainer.innerHTML = '<span class="error-message">Sorry, something went wrong submitting your pledge.<br>Please try again.</span>';
+				errorContainer.innerHTML = '<span class="error-message">Sorry, your pledge was not subitted.<br>Please try again.</span>';
 			}
 		}		
 	}

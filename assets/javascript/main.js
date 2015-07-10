@@ -1,4 +1,4 @@
-// select elements to modify
+// select elements to modify and store them as variables
 var pageTitle = document.getElementById('page-title'),
 	mainHeading = document.getElementById('main-heading'),
 	story = document.getElementById('story'),
@@ -15,24 +15,25 @@ function numberWithCommas(x) {
 }
 
 function ajaxRequest(){
- var activexmodes = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP'] //activeX versions to check for in IE
- if (window.ActiveXObject){ //test for support for ActiveXObject in IE first (as XMLHttpRequest in IE7 is broken)
- 	for (var i = 0; i < activexmodes.length; i++){
- 		try{
- 			return new ActiveXObject(activexmodes[i])
- 		}
- 		catch(e){
-			//suppress error
-		}
+	var activexmodes = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP'] //activeX versions to check for in IE
+ 		if (window.ActiveXObject){ //test for support for ActiveXObject in IE first (as XMLHttpRequest in IE7 is broken)
+ 			for (var i = 0; i < activexmodes.length; i++){
+ 				try{
+ 					return new ActiveXObject(activexmodes[i])
+ 					}
+ 				catch(e){
+					//suppress error
+			}
 	}
 }
 
- else if (window.XMLHttpRequest) // if Mozilla, Safari etc
+else if (window.XMLHttpRequest) // if Mozilla, Safari etc
  	return new XMLHttpRequest()
- else
+else
  	return false
 }
 
+// ajax call to get initial content
 var mygetrequest = new ajaxRequest()
 mygetrequest.onreadystatechange = populatePage;
 mygetrequest.open('GET', '/api/crowdFundingPage' + "?" + (new Date()).getTime(), true); // date and time to avoid caching
@@ -69,6 +70,42 @@ function populatePage(){
 	}
 }
 
+function pledgeSuccess(){
+
+
+	// update totals and progress bar
+	var myupdaterequest = new ajaxRequest();
+	myupdaterequest.onreadystatechange = updateTotals;
+	myupdaterequest.open('GET', '/api/crowdFundingPage' + "?" + (new Date()).getTime(), true);
+	myupdaterequest.send(null);
+
+	function updateTotals(){
+		if (myupdaterequest.readyState == 4){
+
+			if (myupdaterequest.status == 200 || window.location.href.indexOf('http') == -1){
+					var jsondata = eval('('+myupdaterequest.responseText+')') //retrieve result as a JavaScript object
+
+				// populate page content
+				var jsonTotalPledged = jsondata.totalPledged.toFixed(2);
+
+				totalPledged.innerHTML = '&pound;' + numberWithCommas(jsonTotalPledged);
+
+				// calculate percentage
+				var percentPledgedValue = Math.floor((jsondata.totalPledged / jsondata.target) * 100);
+				percentPledged.innerHTML = percentPledgedValue + '%';
+
+				// update progress bar
+				progressBar.value = percentPledgedValue;
+
+			}
+			else{
+				errorContainer.innerHTML = '<span class="error-message">Sorry, something went wrong.</span>';
+				}
+		}
+	}
+
+}
+
 // post pledged amount to the server
 function postPledge(pledgeForm, amount) {
 
@@ -97,36 +134,8 @@ function postPledge(pledgeForm, amount) {
 				pledgeForm.className = pledgeFormDefaultClass + ' success';
 				pledgeForm.innerHTML = '<span class="thank-you-message">Thanks for your pledge!</span>';
 
-				// update totals and progress bar
-				var myupdaterequest = new ajaxRequest()
-				myupdaterequest.onreadystatechange = updateTotals;
-				myupdaterequest.open('GET', '/api/crowdFundingPage' + "?" + (new Date()).getTime(), true);
-				myupdaterequest.send(null);
+				pledgeSuccess();
 
-				function updateTotals(){
-					if (myupdaterequest.readyState == 4){
-
-						if (myupdaterequest.status == 200 || window.location.href.indexOf('http') == -1){
-   							var jsondata = eval('('+myupdaterequest.responseText+')') //retrieve result as a JavaScript object
-
-							// populate page content
-							var jsonTotalPledged = jsondata.totalPledged.toFixed(2);
-
-							totalPledged.innerHTML = '&pound;' + numberWithCommas(jsonTotalPledged);
-
-							// calculate percentage
-							var percentPledgedValue = Math.floor((jsondata.totalPledged / jsondata.target) * 100);
-							percentPledged.innerHTML = percentPledgedValue + '%';
-
-							// update progress bar
-							progressBar.value = percentPledgedValue;
-
-						}
-						else{
-							errorContainer.innerHTML = '<span class="error-message">Sorry, something went wrong.</span>';
-							}
-					}
-				}
 
 			} else {
 

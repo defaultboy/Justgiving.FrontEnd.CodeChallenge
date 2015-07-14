@@ -91,8 +91,8 @@ var Master = {
 
 		  			var remaining = Number(jsonTarget) - Number(jsonTotal);
 
-		  			Master.errorContainer.innerHTML = '<span class="error-message">We only need £' + remaining + ' to reach the target<br>Would you like to pledge that instead?</span>';
-		  			Master.pledgeForm.elements['pledge-amount'].value = remaining;
+		  			Master.errorContainer.innerHTML = '<span class="error-message">We only need £' + remaining.toFixed(2) + ' to reach the target<br>Would you like to pledge that instead?</span>';
+		  			Master.pledgeForm.elements['pledge-amount'].value = remaining.toFixed(2);
 		  		}
 		  		else {
 		  			Master.postPledge(amount);

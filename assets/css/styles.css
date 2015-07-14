@@ -151,7 +151,7 @@ progress[value]::-moz-progress-bar {
 
 .pledge-form {
 	margin: 20px 50px;
-	height: 47px;
+	min-height: 47px;
 }
 
 .pledge-form.loading {
@@ -163,17 +163,15 @@ progress[value]::-moz-progress-bar {
 	display: none;
 }
 
-.pledge-form.success {
+.thank-you-message {
 	background: #fbf4fb;
 	border: 1px solid #a226ab;
-	border-radius: 2px;
-	line-height: 47px;
-	text-align: center;
-}
-
-.thank-you-message {
-	color: #a226ab;	
+	border-radius: 2px;	
+	color: #a226ab;
+	display: block;
+	padding: 0.5em 0;
 	font-size: 1.250em;
+	text-align: center;
 }
 
 .pledge-form__input {

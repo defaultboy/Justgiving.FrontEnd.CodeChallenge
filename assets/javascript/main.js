@@ -1,6 +1,6 @@
 var Utilities = {
 
-	ajaxRequest: function(){
+	ajaxRequest: function() {
 		
 		var activexmodes = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP'] // activeX versions to check for in ie
 	 	
@@ -56,12 +56,13 @@ var Master = {
 	errorContainer: document.getElementById('error-container'),
 
 	// message text
+	completeMsg: 'We have reached the target!<br>Thank you for your pledges.',			
 	thankYouMsg: 'Thanks for your pledge!',
 	pledgeErrorMsg: 'Sorry, something went wrong<br>your pledge was not subitted.',
 	validationErrorMsg: 'Please enter a number',
 	pledgeErrorMsg: 'Sorry, something went wrong.',	
 
-	bindSubmit: function () {
+	bindSubmit: function(jsonTotal, jsonTarget) {
 
 		// when pledge submitted validate form input and post pledge to database
 		Master.pledgeForm.addEventListener('submit', function(e){
@@ -77,17 +78,32 @@ var Master = {
 		  	amount = Utilities.formatInput(amount);
 
 		  	// check if not empty or not a number
-		  	if( !amount || isNaN(amount) ) {
+		  	if ( !amount || isNaN(amount) ) {
 			  	Master.errorContainer.innerHTML = '<span class="error-message">' + Master.validationErrorMsg + '</span>';
 			}
 		  	else {
-			 	Master.postPledge(amount);
+
+		  		var newTotal = Number(amount) + Number(jsonTotal);
+		  		console.log(newTotal);
+
+		  		// handle case where pledge exceeds target
+		  		if (newTotal > jsonTarget) {
+
+		  			var remaining = Number(jsonTarget) - Number(jsonTotal);
+
+		  			Master.errorContainer.innerHTML = '<span class="error-message">We only need £' + remaining + ' to reach the target<br>Would you like to pledge that instead?</span>';
+		  			Master.pledgeForm.elements['pledge-amount'].value = remaining;
+		  		}
+		  		else {
+		  			Master.postPledge(amount);
+		  		}
+
 		  	}  	
 
 		});
 	},
 
-	getContent: function(){
+	getContent: function() {
 
 		var mygetrequest = new Utilities.ajaxRequest();
 		mygetrequest.onreadystatechange = populatePage;
@@ -116,6 +132,15 @@ var Master = {
 					// update progress bar
 					Master.progressBar.value = percentPledgedValue;
 
+					// check if target has been reached
+					if (jsondata.totalPledged >= jsondata.target) {
+						Master.pledgeForm.className = Master.pledgeForm.className + ' success';
+						Master.pledgeForm.innerHTML = '<span class="thank-you-message">' + Master.completeMsg + '</span>';
+					}
+					else {
+						Master.bindSubmit(jsondata.totalPledged, jsondata.target);
+					}
+
 				}
 				else{
 					Master.errorContainer.innerHTML('<span class="error-message">' + Master.otherErrorMsg + '</span>')
@@ -124,45 +149,8 @@ var Master = {
 		}
 	},	
 
-	init: function(){
-
+	init: function() {
 		Master.getContent();
-		Master.bindSubmit();
-
-	},	
-
-	pledgeSuccess: function(){
-
-		// when pledge is successful update totals
-
-		var myupdaterequest = new Utilities.ajaxRequest();
-		myupdaterequest.onreadystatechange = updateTotals;
-		myupdaterequest.open('GET', '/api/crowdFundingPage' + "?" + (new Date()).getTime(), true);
-		myupdaterequest.send(null);
-
-		function updateTotals(){
-			if (myupdaterequest.readyState == 4){
-
-				if (myupdaterequest.status == 200 || window.location.href.indexOf('http') == -1){
-					var jsondata = eval('('+myupdaterequest.responseText+')') //retrieve result as a JavaScript object
-
-					// populate page content
-					Master.totalPledged.innerHTML = '&pound;' + Utilities.numberFormat(jsondata.totalPledged);
-
-					// calculate percentage
-					var percentPledgedValue = Math.floor((jsondata.totalPledged / jsondata.target) * 100);
-					Master.percentPledged.innerHTML = percentPledgedValue + '%';
-
-					// update progress bar
-					Master.progressBar.value = percentPledgedValue;
-
-				}
-				else{
-					Master.errorContainer.innerHTML = '<span class="error-message">' + Master.otherErrorMsg + '</span>';
-					}
-			}
-		}
-
 	},	
 
 	postPledge: function(amount) {
@@ -194,7 +182,8 @@ var Master = {
 					Master.pledgeForm.className = pledgeFormDefaultClass + ' success';
 					Master.pledgeForm.innerHTML = '<span class="thank-you-message">' + Master.thankYouMsg + '</span>';
 
-					Master.pledgeSuccess();
+					// update page content
+					Master.getContent();
 
 
 				} else if (mypostrequest.status === 500 && tries <= 10) {
@@ -222,6 +211,6 @@ var Master = {
 
 
 // window load
-window.onload = function(){
+window.onload = function() {
 	Master.init();
 };

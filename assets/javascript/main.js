@@ -54,6 +54,7 @@ var Master = {
 	progressBar: document.getElementById('progress-bar'),
 	pledgeForm: document.getElementById('pledge-form'),
 	errorContainer: document.getElementById('error-container'),
+	progressBarFallback: document.getElementById('progress-fallback-value'),
 
 	// message text
 	completeMsg: 'We have reached the target!<br>Thank you for your pledges.',			
@@ -131,6 +132,8 @@ var Master = {
 
 					// update progress bar
 					Master.progressBar.value = percentPledgedValue;
+					Master.progressBarFallback.style.width = percentPledgedValue + '%';
+
 
 					// check if target has been reached
 					if (jsondata.totalPledged >= jsondata.target) {

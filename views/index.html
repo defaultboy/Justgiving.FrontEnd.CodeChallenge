@@ -13,6 +13,7 @@
 	<meta name="title" content="Crowdfunding for good from JustGiving">
 	<meta name="description" content="With JustGiving Crowdfunding, anyone can raise money to fund their own project. If it benefits a friend in need, or a local or overseas community">
 
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="/css/styles.css" />
 
 </head>
@@ -25,7 +26,11 @@
 		</header>
 
 		<section class="progress">
-			<progress id="progress-bar" class="progress-bar" max="100" value="0"></progress>
+			<progress id="progress-bar" class="progress-bar" max="100" value="0">
+				<div class="progress-fallback">
+        			<div id="progress-fallback-value"></div>
+    			</div>
+			</progress>
 
 			<div class="progress__col col--left">
 				<span class="progress__large-text" id="total-pledged" class="total"></span>
